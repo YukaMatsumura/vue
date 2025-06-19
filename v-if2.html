@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+      <meta charset="utf-8">
+      <title>My first Vue app</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" >
+        <script src="https://unpkg.com/vue@3.5.0/dist/vue.global.js"></script> 
+      </head>
+
+
+    <body>
+      <style>
+      .red {
+           font-size:32pt;
+           font-weight:plain;
+           color:red;
+      }
+      .blue {
+           font-size:24pt;
+           font-weight:bold;
+           color:blue;
+      }
+        </style>
+        <h1 class="bg-primary text-white display-4 px-3">Vue3</h1>
+        <div id="app" class="bg-secondary display-4 px-3 container">
+					<!-- remが0でない場合、blueクラスを適用、remが0の場合、redクラスを適用 -->
+          <p v-if="rem != 0" class="blue">
+            {{ message }}
+          </p>
+					<!-- remが0の場合、redクラスを適用 -->
+          <p v-else class="red">
+            {{ ngmessage }}
+          </p>
+      </div>
+        
+      <script>
+        const appdata = {
+          data() {
+            return {
+              message : null,
+              count: 0,/* プログラムでcountを0にしている */
+              rem: 1/* プログラムでremを1にしている */
+            }
+          },
+          mounted() {/* マウントされた時に実行される */
+            this.message = 'カウントスタート'/* messageをカウントスタートとして準備 */
+            this.ngmessage = 'カウントリセット'/* ngmessageをカウントリセットとして準備 */
+            setInterval(()=>{
+              this.count++/* countを1増やす */
+              this.rem = this.count % 10/* countが10の倍数になったときにremは0になる */
+              this.message = 'カウント' + this.rem + '秒経過'/* messageをカウントとremと秒経過として準備 */
+            },1000)/* 1秒ごとに実行する */
+          }
+        }
+      
+        Vue.createApp(appdata).mount('#app')/* appdataをappというidの要素にマウントする */	
+        </script>
+      </body>
+      <!-- このコードでは、`rem`の値が0でない場合に青色のメッセージが表示され、`rem`の値が0の場合に赤色のメッセージが表示されます。
+
+`rem`は`count`を10で割った余りで、`count`は1秒ごとに1増加します。したがって、`rem`の値は0から9までの間で循環します。
+
+具体的には、`count`が10の倍数（10, 20, 30, ...）のときに`rem`は0になり、そのときに赤色のメッセージが表示されます。それ以外の場合は青色のメッセージが表示されます。
+
+つまり、赤色のメッセージは10秒ごとに表示され、それ以外の時間は青色のメッセージが表示されます。 -->

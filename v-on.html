@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <title>My first Vue app</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" >
+    <script src="https://unpkg.com/vue@3.5.0/dist/vue.global.js"></script>    
+  </head>
+
+  <body>
+    <h1 class="bg-primary text-white display-4 px-3">Vue3</h1>
+    <div id="app">
+      <button v-on:click="onClick">マウスをクリック</button>
+      <!--now変数を用意-->
+			<p>{{ now }}</p>
+    </div>
+    <script>
+      const appdata = {
+        data: () => ({
+          now: '-'/*何もしてないときは"-"が表示される*/
+        }),
+        methods: {/*イベントが発生したときになにをするか？*/
+            onClick: function() {/*クリックされたら*/
+							/*このnowの部分に現在日本時刻を表示する*/
+                this.now = new Date().toLocaleString('ja-JP');
+            }
+        }
+      }
+      Vue.createApp(appdata).mount('#app');
+    </script>
+  </body>
+</html>
