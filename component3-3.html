@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue.js Example</title>
+  <style>
+    .demo {
+      font-family: sans-serif;
+      border: 1px solid #eee;
+      border-radius: 2px;
+      padding: 20px 30px;
+      margin-top: 1em;
+      margin-bottom: 40px;
+      user-select: none;
+      overflow-x: auto;
+    }
+    
+    .blog-post {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+	 <!-- HTML-->
+  <!-- Vueアプリのマウント先（親コンポーネント） -->
+  <div id="blog-posts-events-demo">
+    <!-- postFontSizeの値で文字サイズを動的に変更 -->
+    <div :style="{ fontSize: postFontSize + 'em' }">
+      <!-- posts配列の各要素に対してblog-postコンポーネントを繰り返し表示 -->
+			<!--子コンポーネントからenlarge-textイベントが発火したら文字サイズを大きくする-->
+      <blog-post
+        v-for="post in posts"
+        :key="post.id"
+        :title="post.title"
+        @enlarge-text="postFontSize += 0.1" 
+      ></blog-post>
+    </div>
+  </div>
+
+  <!-- Vue.js本体の読み込み -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@3.5.0/dist/vue.global.js"></script>
+  <script>
+    // Vueアプリケーションの作成
+    const app = Vue.createApp({
+      data() {
+        return {
+          // ブログ記事の配列
+          posts: [
+            { id: 1, title: 'Vueとの航海' },
+            { id: 2, title: 'Vueとの旅' },
+            { id: 3, title: 'Vue旅行記' }
+          ],
+          // 文字サイズ（em単位）
+          postFontSize: 1
+        };
+      }
+    });
+
+    // blog-postコンポーネントの定義（子コンポーネント ）
+    app.component('blog-post', {
+      // 親から受け取るプロパティ
+      props: ['title'],
+      // テンプレート部分
+			// ボタンをクリックするとenlarge-textイベントを親に送る -->
+			//@cliclkは v-on の省略系
+      template: `
+        <div class="blog-post">
+          <h4>{{ title }}</h4>
+          <button @click="$emit('enlarge-text')">
+            Enlarge text
+          </button>
+        </div>
+      `
+    });
+
+    // Vueアプリケーションをマウント
+    app.mount('#blog-posts-events-demo');
+  </script>
+</body>
+</html>
